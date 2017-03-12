@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Helpers\MenuHierarchy;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Menu;
+
 
 class MenuController extends Controller
 {
@@ -27,6 +29,8 @@ class MenuController extends Controller
 
     public function save(Request $request)
     {
+        $this->doValidation($request);
+        
         $data = Menu::create([
             'title'     =>  $request->get('title'),
             'url'       =>  str_slug($request->get('url')),
@@ -56,5 +60,14 @@ class MenuController extends Controller
     {
         $menus = Menu::select('id','title','url')->parent()->with('allChildren')->get();
         return view($this->view_path.'.front_view',compact('menus'));
+    }
+
+    protected function doValidation($request)
+    {
+        $this->validate($request,[
+            'title' =>  'required',
+            'url'   =>  'required',
+            'type'  =>  'required',
+        ]);
     }
 }

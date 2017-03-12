@@ -14,12 +14,21 @@
     <div class="col-xs-12">
         <div class="col-md-6">
            <h1>Create A Menu</h1>
+            <a href='{{route('menu.front_view')}}'><button class="btn btn-primary">Back To Index</button></a>
+            <hr>
             <div class="col-xs-6">
+                @if (count($errors) > 0)
+                <div class = "alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+                </div>
+                @endif
                {{Form::open(['route'=>'menu.store','method'=>'post'])}}
                 @include('backend.menu.partials._form',['submitBtn'=>'Save'])
                {{Form::close()}}
-
-
             </div>
         </div>
     </div>

@@ -25,6 +25,7 @@
     <div class="col-xs-12">
         <div class="col-md-6">
             <h1>Menu View</h1>
+            <a href='{{route('menu.create')}}'><button class="btn btn-success">Create A Menu</button></a>
             <hr>
             <div class="col-xs-6">
                 @if(count($menus)>0)

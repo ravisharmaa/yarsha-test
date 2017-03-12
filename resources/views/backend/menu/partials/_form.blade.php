@@ -8,7 +8,7 @@
 </div>
 <div class="form-group">
     {{Form::label('type','Choose Type')}}
-    {{Form::select('type',['page'=>'Page','post'=>'Post'], null, ['class'=>'form-control','placeholder'=>"Choose Type"])}}
+    {{Form::select('type',['page'=>'Page','post'=>'Post'], null, ['class'=>'form-control'])}}
 </div>
 
 <div class="form-group">
@@ -16,4 +16,5 @@
     {{Form::select('parent_id',isset($data)?$data:null, null, ['class'=>'form-control','placeholder'=>"Choose Parent"])}}
 </div>
 
-{{Form::button($submitBtn,['type'=>'submit','class'=>'btn btn-primary'])}}
+{{Form::button($submitBtn,['type'=>'submit','class'=>'btn btn-success'])}}
+{{Form::button('Reset',['type'=>'reset','class'=>'btn btn-danger'])}}
