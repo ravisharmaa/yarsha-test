@@ -28,9 +28,9 @@
            <h1>Index Of Parent Menus</h1>
             <hr/>
             <div class="col-xs-4">
-                <ul id="sortable">
+                <ul id="sortable" data-id="{{$menus}}">
                     @foreach($menus as $menu)
-                    <li class="well">{{$menu->title}}</li>
+                    <li class="well" data-id="{{$menu->id}}">{{$menu->title}}</li>
                     @endforeach
                 </ul>
             </div>
@@ -41,4 +41,17 @@
 
 </body>
 <script href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script>
+        $("document").ready(function(){
+            $("#sortable").sortable({
+                opacity: 0.6,
+                cursor: "move",
+                update:function(event, ui){
+                    var default_order = $(".well").attr('data-id');
+                    var order = $(this).sortable('toArray');
+                    console.log(order);
+                }
+            })
+        });
+    </script>
 </html>

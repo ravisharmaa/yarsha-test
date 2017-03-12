@@ -32,14 +32,17 @@
                     @foreach($menus as $menu)
                         <li>
                             <div>{{$menu->title}}</div>
+                            @if($menu->allchildren->count()>0)
                             <ul>
                                 @foreach($menu->allChildren as $children)
                                 <li>
                                     <div>{{$children->title}}</div>
+                                    @if($children->allChildren->count()>0)
                                     <ul>
                                         @foreach($children->allChildren as $child)
                                         <li>
                                             <div>{{$child->title}}</div>
+                                            @if($child->allchildren->count()>0)
                                             <ul>
                                                 @foreach($child->allChildren as $c)
                                                 <li>
@@ -47,12 +50,15 @@
                                                 </li>
                                                 @endforeach
                                             </ul>
+                                            @endif
                                         </li>
                                         @endforeach
                                     </ul>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
+                             @endif
                         </li>
                     @endforeach
                 </ul>
