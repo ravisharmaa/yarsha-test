@@ -30,7 +30,7 @@ class MenuController extends Controller
         $data = Menu::create([
             'title'     =>  $request->get('title'),
             'url'       =>  str_slug($request->get('url')),
-            'order'     =>  $this->setOrderOnCreate(),
+            'order'     =>  $this->setOrderOnCreate($request->get('parent_id')),
             'type'      =>  $request->get('type'),
             'parent_id' =>  !empty($request->get('parent_id')) ? $request->get('parent_id'): null,
         ]);
@@ -40,10 +40,16 @@ class MenuController extends Controller
 
 
 
-    protected function setOrderOnCreate()
+    protected function setOrderOnCreate($parent_id)
     {
-        $order = Menu::max('order');
-        return $order = is_null($order) ? 1 : $order+1;
+       if(is_null($parent_id)){
+           $order = Menu::select('id','order')->parent()->max('order');
+           return $order = is_null($order) ? 1 : $order+1;
+       } else {
+          $order = Menu::select('id','order')->where('parent_id','!=',null)->max('order');
+          return $order = is_null($order) ? 1: $order+1;
+       }
+
     }
 
     public function frontView()
