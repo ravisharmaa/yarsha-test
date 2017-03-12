@@ -35,7 +35,7 @@ class MenuController extends Controller
             'parent_id' =>  !empty($request->get('parent_id')) ? $request->get('parent_id'): null,
         ]);
 
-        return redirect()->route($this->base_route.'.index');
+        return redirect()->route($this->base_route.'.front_view');
     }
 
 

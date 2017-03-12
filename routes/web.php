@@ -11,7 +11,7 @@
 |
 */
 
-$this->get('/',                 ['as'=>'menus.front_view',  'uses'=>'MenuController@frontView']);
+$this->get('/',                 ['as'=>'menu.front_view',  'uses'=>'MenuController@frontView']);
 $this->get('menu/index',        ['as'=> 'menu.index',   'uses'=>'MenuController@index']);
 $this->get('menu/create',       ['as'=> 'menu.create',   'uses'=>'MenuController@create']);
 $this->post('menu/save',        ['as'=>'menu.store',    'uses'=>'MenuController@save']);
