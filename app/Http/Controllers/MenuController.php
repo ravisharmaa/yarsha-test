@@ -29,17 +29,31 @@ class MenuController extends Controller
 
     public function save(Request $request)
     {
-        $this->doValidation($request);
-        
-        $data = Menu::create([
-            'title'     =>  $request->get('title'),
-            'url'       =>  str_slug($request->get('url')),
-            'order'     =>  $this->setOrderOnCreate($request->get('parent_id')),
-            'type'      =>  $request->get('type'),
-            'parent_id' =>  !empty($request->get('parent_id')) ? $request->get('parent_id'): null,
-        ]);
 
-        return redirect()->route($this->base_route.'.front_view');
+        if(!$request->ajax()){
+            $data = Menu::create([
+                'title'     =>  $request->get('title'),
+                'url'       =>  str_slug($request->get('url')),
+                'order'     =>  $this->setOrderOnCreate($request->get('parent_id')),
+                'type'      =>  $request->get('type'),
+                'parent_id' =>  !empty($request->get('parent_id')) ? $request->get('parent_id'): null,
+            ]);
+
+            return redirect()->route($this->base_route.'.front_view');
+        } else {
+            $data = Menu::create([
+                'title'     =>  $request->get('title'),
+                'url'       =>  str_slug($request->get('url')),
+                'order'     =>  $this->setOrderOnCreate($request->get('parent_id')),
+                'type'      =>  $request->get('type'),
+                'parent_id' =>  !empty($request->get('parent_id')) ? $request->get('parent_id'): null,
+            ]);
+            return response()->json(json_encode([
+                'success'=>true,
+                'data'  =>  $data
+            ]));
+        }
+
     }
 
 
@@ -59,7 +73,8 @@ class MenuController extends Controller
     public function frontView()
     {
         $menus = Menu::select('id','title','url')->parent()->with('allChildren')->get();
-        return view($this->view_path.'.front_view',compact('menus'));
+        $data = Menu::pluck('title','id');
+        return view($this->view_path.'.front_view',compact('menus', 'data'));
     }
 
     protected function doValidation($request)

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,7 +25,7 @@
                   </ul>
                 </div>
                 @endif
-               {{Form::open(['route'=>'menu.store','method'=>'post'])}}
+               {{Form::open(['route'=>'menu.store','method'=>'post', 'id'=>"myForm"])}}
                 @include('backend.menu.partials._form',['submitBtn'=>'Save'])
                {{Form::close()}}
             </div>
@@ -38,3 +37,47 @@
 </body>
 <script href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 </html>
+
+<script>
+    $(function(){
+       $("#myForm").submit(function(event){
+            event.preventDefault();
+            var $this       = $(this);
+            var frmValues   = $this.serializeArray();
+           $.ajax({
+                method  : $this.attr("method"),
+                url     : $this.attr("action"),
+                data    : frmValues,
+
+                beforeSend: function(){
+                    console.log("beingSent");
+                },
+
+                success:function(response){
+                    (function(){
+                        var resp = jQuery.parseJSON(response);
+                        $this.trigger("reset");
+                    })(response);
+                },
+
+                error:function(request){
+                    console.log(request.responseText);
+                },
+
+                complete:function(response){
+                    refresh();
+                }
+            });
+
+           function refresh(){
+               console.log("in refresh");
+               setTimeout(function(){
+                   var page = '{{view ('backend.menu.front_view')}}';
+                   $("#menu").load(page);
+               },1000);
+           }
+
+
+       });
+    });
+</script>
